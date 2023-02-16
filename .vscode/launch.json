@@ -1,0 +1,42 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+          "name": "netlify dev",
+          "type": "node",
+          "request": "launch",
+          "skipFiles": ["<node_internals>/**"],
+          "outFiles": ["${workspaceFolder}/.netlify/functions-serve/**/*.js"],
+          "program": "${workspaceFolder}/node_modules/.bin/netlify",
+          "args": ["dev"],
+          "console": "integratedTerminal",
+          "env": { "BROWSER": "none" },
+          "serverReadyAction": {
+            "pattern": "Server now ready on (https?://[\\w:.-]+)",
+            "uriFormat": "%s",
+            "action": "debugWithChrome"
+          }
+        },
+        {
+          "name": "netlify functions:serve",
+          "type": "node",
+          "request": "launch",
+          "skipFiles": ["<node_internals>/**"],
+          "outFiles": ["${workspaceFolder}/.netlify/functions-serve/**/*.js"],
+          "program": "${workspaceFolder}/node_modules/.bin/netlify",
+          "args": ["functions:serve"],
+          "console": "integratedTerminal"
+        }
+    ]
+}
