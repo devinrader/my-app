@@ -9,7 +9,7 @@ import CampaignCompanies from './companies';
 
 export const Details: Component = () => {
 
-  const base = new Airtable({apiKey: process.env.AIRTABLE_KEY}).base('appls7XVxwxuDkhMg');
+  const base = new Airtable({apiKey: import.meta.env.VITE_AIRTABLE_KEY}).base('appls7XVxwxuDkhMg');
 
   const params = useParams();
 
