@@ -4,7 +4,7 @@ import { A } from "@solidjs/router"
 
 import Airtable from 'airtable';
 
-const base = new Airtable({apiKey: ''}).base('appls7XVxwxuDkhMg');
+const base = new Airtable({apiKey: process.env.AIRTABLE_KEY}).base('appls7XVxwxuDkhMg');
 
 const fetchCompanies = async () => {
   let allCompanies = await base('Companies').select({sort:[{field: "Name", direction: "asc"}]}).all();
