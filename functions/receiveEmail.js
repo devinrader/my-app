@@ -4,31 +4,11 @@ const Busboy = require('busboy');
 
 
 exports.handler = async function(event, context) {
-  const base = new Airtable({apiKey: process.env.VITE_AIRTABLE_KEY}).base('appls7XVxwxuDkhMg');
-
-  console.log(event.body)
-
   const fields = await parseMultipartForm(event)
 
-  //console.log(fields)
-  //if(body != null && body.data != null) {
-  //  var data = body.data;
-  //  console.log(data)    
-  base('Emails').create([
-    {
-      "fields": {
-        From: fields["from"],
-        Subject: fields["subject"],
-        Html: fields["html"],
-        Plain: fields["text"],
-        Headers: fields["headers"]
-      }
-    }
-  ], err => {
-    if (err) { console.error(err); return; }
-    console.log('Message saved to Airtable')    
-  })
-  //}
+  await saveMail(fields)
+
+  console.log('Email Saved')
   return {
       statusCode: 200
   }
@@ -72,3 +52,30 @@ function parseMultipartForm(event) {
     busboy.end(Buffer.from(event.body, 'base64'))
   });
 }
+
+const saveMail = async (fields) => {
+  return new Promise((resolve, reject) => {
+    const { VITE_AIRTABLE_KEY: apiKey, } = process.env;
+console.log(fields)
+    Airtable.configure({
+      apiKey
+    });
+
+    const base = Airtable.base('appls7XVxwxuDkhMg');
+    base('Emails').create([
+      {
+        "fields": {
+          From: fields["from"],
+          Subject: fields["subject"],
+          Html: fields["html"],
+          Plain: fields["text"],
+          Headers: fields["headers"]
+        }
+      }
+    ], err => {
+      if (err) return reject(err);
+
+      resolve();
+    });
+  });
+};
