@@ -13,17 +13,17 @@ exports.handler = async function(event, context) {
   //if(body != null && body.data != null) {
   //  var data = body.data;
   //  console.log(data)    
-  //   base('Emails').create({
-  //     From: data.from,
-  //     Subject: data.subject,
-  //     Html: data.html,
-  //     Plain: data.text,
-  //     Headers: data.headers
-  //   }, err => {
-  //     if (err) { console.error(err); return; }
-  //     console.log('Message saved to Airtable')
-  //     res.status(200).end();
-  //   })
+  base('Emails').create({
+    From: data.from,
+    Subject: data.subject,
+    Html: data.html,
+    Plain: data.text,
+    Headers: data.headers
+  }, err => {
+    if (err) { console.error(err); return; }
+    console.log('Message saved to Airtable')
+    res.status(200).end();
+  })
   //}
   return {
       statusCode: 200
