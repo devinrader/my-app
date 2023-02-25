@@ -9,7 +9,7 @@ exports.handler = async function(event, context) {
 
   const fields = await parseMultipartForm(event)
 
-  /console.log(fields)
+  console.log(fields)
   //if(body != null && body.data != null) {
   //  var data = body.data;
   //  console.log(data)    
