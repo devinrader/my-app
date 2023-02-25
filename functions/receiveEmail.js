@@ -9,16 +9,16 @@ exports.handler = async function(event, context) {
 
   const fields = await parseMultipartForm(event)
 
-  //console.log(fields)
+  /console.log(fields)
   //if(body != null && body.data != null) {
   //  var data = body.data;
   //  console.log(data)    
   base('Emails').create({
-    From: data.from,
-    Subject: data.subject,
-    Html: data.html,
-    Plain: data.text,
-    Headers: data.headers
+    From: fields["from"],
+    Subject: fields["subject"],
+    Html: fields["html"],
+    Plain: fields["text"],
+    Headers: fields["headers"]
   }, err => {
     if (err) { console.error(err); return; }
     console.log('Message saved to Airtable')
