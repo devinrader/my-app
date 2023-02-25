@@ -2,14 +2,15 @@ const https = require("https");
 const Airtable = require('airtable');
 const Busboy = require('busboy');
 
-const base = new Airtable({apiKey: process.env.VITE_AIRTABLE_KEY}).base('appls7XVxwxuDkhMg');
 
 exports.handler = async function(event, context) {
+  const base = new Airtable({apiKey: process.env.VITE_AIRTABLE_KEY}).base('appls7XVxwxuDkhMg');
+
   console.log(event.body)
 
   const fields = await parseMultipartForm(event)
 
-  console.log(fields)
+  //console.log(fields)
   //if(body != null && body.data != null) {
   //  var data = body.data;
   //  console.log(data)    
