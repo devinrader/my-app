@@ -13,16 +13,19 @@ exports.handler = async function(event, context) {
   //if(body != null && body.data != null) {
   //  var data = body.data;
   //  console.log(data)    
-  base('Emails').create({
-    From: fields["from"],
-    Subject: fields["subject"],
-    Html: fields["html"],
-    Plain: fields["text"],
-    Headers: fields["headers"]
-  }, err => {
+  base('Emails').create([
+    {
+      "fields": {
+        From: fields["from"],
+        Subject: fields["subject"],
+        Html: fields["html"],
+        Plain: fields["text"],
+        Headers: fields["headers"]
+      }
+    }
+  ], err => {
     if (err) { console.error(err); return; }
-    console.log('Message saved to Airtable')
-    res.status(200).end();
+    console.log('Message saved to Airtable')    
   })
   //}
   return {
