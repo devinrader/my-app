@@ -6,7 +6,7 @@ const Busboy = require('busboy');
 exports.handler = async function(event, context) {
   const fields = await parseMultipartForm(event)
 
-  await saveMail(fields)
+  await createMail(fields)
 
   console.log('Email Saved')
   return {
@@ -53,10 +53,10 @@ function parseMultipartForm(event) {
   });
 }
 
-const saveMail = async (fields) => {
+const createMail = async (fields) => {
   return new Promise((resolve, reject) => {
     const { VITE_AIRTABLE_KEY: apiKey, } = process.env;
-console.log(fields)
+    console.log(fields)
     Airtable.configure({
       apiKey
     });

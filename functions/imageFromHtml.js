@@ -6,17 +6,18 @@ const base = new Airtable({apiKey: process.env.VITE_AIRTABLE_KEY}).base('appls7X
 
 exports.handler = async function(event, context) {
   var body = JSON.parse(event.body);
+  
+  //console.log(body)
+
   if(body != null && body.payloads != null && body.payloads.length > 0) {
     var payloads = body.payloads
 
-    var changedTable = payloads[0].changedTablesById
-    var createdRecord = Object.values(changedTable)[0].createdRecordsById
-    console.log(changedTable)
-    console.log(createdRecord)
+    var changedTable = payloads[0].changedTablesById.tbl898JpGTX96lpGu
+    var createdRecord = Object.values(changedTable.createdRecordsById)[0]
 
     // Create an image by sending a POST to the API.
     // Retrieve your api_id and api_key from the Dashboard. https://htmlcsstoimage.com/dashboard
-    const htmlemail = { html: createdRecord.cellValuesByFieldId.Html };
+    const htmlemail = { html: createdRecord.cellValuesByFieldId.fldRdqWqZcbschJ6M };
 
     var imageUrl = ''
 
@@ -38,26 +39,38 @@ exports.handler = async function(event, context) {
 
     console.log(imageUrl)
     //update the airtable record
-    base('Emails').update([
-      {
-        "id":object.values(createdRecord)[0],
-        "fields": {
-          "RenderedImageUrl": imageUrl
-        }
-      }
-    ], err => {
-      if (err) { console.error(err); return; }
-      console.log('Message saved to Airtable')
-      res.status(200).end();
-    })
+    //console.log(changedTable.createdRecordsById)
+    const recordById = changedTable.createdRecordsById;
+    console.log(Object.keys(recordById)[0])
+
+    updateMail(Object.keys(recordById)[0], imageUrl)
   }
+
   return {
       statusCode: 200
   }
 }
 
+const updateMail = async (id, imageUrl) => {
+  return new Promise((resolve, reject) => {
+    const { VITE_AIRTABLE_KEY: apiKey, } = process.env;
+    //console.log(fields)
+    Airtable.configure({
+      apiKey
+    });
 
-// async function createImage(html) {
+    const base = Airtable.base('appls7XVxwxuDkhMg');
+    base('Emails').update([
+      {
+        "id": id,
+        "fields": {
+          "RenderedImageUrl": imageUrl
+        }
+      }
+    ], err => {
+      if (err) return reject(err);
 
-// }
-
+      resolve();
+    });
+  });
+};
