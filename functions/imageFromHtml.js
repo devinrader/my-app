@@ -5,6 +5,8 @@ const axios = require('axios');
 //const base = new Airtable({apiKey: process.env.VITE_AIRTABLE_KEY}).base('appls7XVxwxuDkhMg');
 
 exports.handler = async function(event, context) {
+  console.log(info)
+  
   var info = JSON.parse(event.body)
   
   if (info !=null) {
