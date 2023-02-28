@@ -7,7 +7,7 @@ const base = new Airtable({apiKey: process.env.VITE_AIRTABLE_KEY}).base('appls7X
 exports.handler = async function(event, context) {
   var body = JSON.parse(event.body);
   
-  //console.log(body)
+  console.log(body)
 
   if(body != null && body.payloads != null && body.payloads.length > 0) {
     var payloads = body.payloads
