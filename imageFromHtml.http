@@ -5,21 +5,36 @@ Content-Type: application/json
 {
   "payloads": [
     {
-      "timestamp": "2022-02-01T21:25:05.663Z",
-      "baseTransactionNumber": 4,
+      "timestamp": "2023-02-28T01:18:00.411Z",
+      "baseTransactionNumber": 3074,
       "actionMetadata": {
         "source": "client",
         "sourceMetadata": {
           "user": {
-            "id": "usr00000000000000",
-            "html": "<html></html>",
-            "permissionLevel": "create"
+            "id": "usrVmZdhkXEhYEA2L",
+            "email": "devin@mindwhip.com",
+            "permissionLevel": "create",
+            "name": "Devin Rader",
+            "profilePicUrl": "https://static.airtable.com/images/userIcons/user_icon_6.png"
           }
         }
       },
-      "payloadFormat": "v0"
+      "payloadFormat": "v0",
+      "changedTablesById": {
+        "tbl898JpGTX96lpGu": {
+          "createdRecordsById": {
+            "recmrTrvwhbwHYR83": {
+              "createdTime": "2023-02-28T01:18:00.000Z",
+              "cellValuesByFieldId": {
+
+              }
+            }
+          }
+        }
+      }
     }
   ],
-  "cursor": 5,
-  "mightHaveMore": false
+  "cursor": 2,
+  "mightHaveMore": false,
+  "payloadFormat": "v0"
 }
