@@ -5,7 +5,7 @@ const axios = require('axios');
 //const base = new Airtable({apiKey: process.env.VITE_AIRTABLE_KEY}).base('appls7XVxwxuDkhMg');
 
 exports.handler = async function(event, context) {
-  console.log(info)
+  console.log(event.body)
   
   var info = JSON.parse(event.body)
   
@@ -103,7 +103,7 @@ const updateMail = async (id, imageUrl) => {
       }
     ], err => {
       if (err) return reject(err);
-
+      console.log(err);
       resolve();
     });
   });
