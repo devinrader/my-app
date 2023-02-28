@@ -2,49 +2,81 @@ const Airtable = require('airtable');
 const https = require("https");
 const axios = require('axios');
 
-const base = new Airtable({apiKey: process.env.VITE_AIRTABLE_KEY}).base('appls7XVxwxuDkhMg');
+//const base = new Airtable({apiKey: process.env.VITE_AIRTABLE_KEY}).base('appls7XVxwxuDkhMg');
 
 exports.handler = async function(event, context) {
-  var body = JSON.parse(event.body);
+  var info = JSON.parse(event.body)
   
-  console.log(body)
+  if (info !=null) {
 
-  if(body != null && body.payloads != null && body.payloads.length > 0) {
-    var payloads = body.payloads
-
-    var changedTable = payloads[0].changedTablesById.tbl898JpGTX96lpGu
-    var createdRecord = Object.values(changedTable.createdRecordsById)[0]
-
-    // Create an image by sending a POST to the API.
-    // Retrieve your api_id and api_key from the Dashboard. https://htmlcsstoimage.com/dashboard
-    const htmlemail = { html: createdRecord.cellValuesByFieldId.fldRdqWqZcbschJ6M };
-
-    var imageUrl = ''
-
-    let headers = { auth: {
-      username: process.env.VITE_HTMLTOIMAGE_USERID,
-      password: process.env.VITE_HTMLTOIMAGE_KEY
-    },
-    headers: {
-      'Content-Type': 'application/json'
+    let headers = { 
+      headers: {
+        'Authorization': `Bearer patTp0Aw6boovC62m.26bf00c32a6f37dd59cc2bc17662a6140186a73f4efe3ecc14cd4262cde5aebd`, //${process.env.VITE_AIRTABLE_TOKEN}` ,
+        'Content-Type': 'application/json'
+      }
     }
-    }
+
+    var webhooks = []
+
     try {
-      const response = await axios.post('https://hcti.io/v1/image', JSON.stringify(htmlemail), headers);
-      console.log(response.data.url);
-      imageUrl = response.data.url;
+      const response = await axios.get(`https://api.airtable.com/v0/bases/appls7XVxwxuDkhMg/webhooks/`, headers);
+      console.log(response.data.webhooks);
+      webhooks = response.data.webhooks;
     } catch (error) {
       console.error(error);
     }
 
-    console.log(imageUrl)
-    //update the airtable record
-    //console.log(changedTable.createdRecordsById)
-    const recordById = changedTable.createdRecordsById;
-    console.log(Object.keys(recordById)[0])
+    if (webhooks.length>0) {
+      const cursorForCurrentPayload = webhooks[0].cursorForNextPayload-1
 
-    updateMail(Object.keys(recordById)[0], imageUrl)
+      var payloads = []
+
+      try {
+        const response = await axios.get(`https://api.airtable.com/v0/bases/appls7XVxwxuDkhMg/webhooks/${info.webhook.id}/payloads?cursor=${cursorForCurrentPayload}`, headers);
+        console.log(response.data.payloads);
+        payloads = response.data.payloads;
+      } catch (error) {
+        console.error(error);
+      }
+      
+      if(payloads.length > 0) {
+        
+        var changedTable = payloads[0].changedTablesById.tbl898JpGTX96lpGu
+        var createdRecord = Object.values(changedTable.createdRecordsById)[0]
+    
+        // Create an image by sending a POST to the API.
+        // Retrieve your api_id and api_key from the Dashboard. https://htmlcsstoimage.com/dashboard
+        const htmlemail = { html: createdRecord.cellValuesByFieldId.fldRdqWqZcbschJ6M };
+    
+        var imageUrl = ''
+    
+        let headers = { auth: {
+          username: process.env.VITE_HTMLTOIMAGE_USERID,
+          password: process.env.VITE_HTMLTOIMAGE_KEY
+        },
+        headers: {
+          'Content-Type': 'application/json'
+        }
+        }
+        try {
+          const response = await axios.post('https://hcti.io/v1/image', JSON.stringify(htmlemail), headers);
+          console.log(response.data.url);
+          imageUrl = response.data.url;
+        } catch (error) {
+          console.error(error);
+        }
+    
+        console.log(imageUrl)
+        //update the airtable record
+        //console.log(changedTable.createdRecordsById)
+        const recordById = changedTable.createdRecordsById;
+        console.log(Object.keys(recordById)[0])
+    
+        updateMail(Object.keys(recordById)[0], imageUrl)
+      }
+    }
   }
+
 
   return {
       statusCode: 200
