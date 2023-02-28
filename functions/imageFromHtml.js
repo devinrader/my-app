@@ -74,7 +74,7 @@ exports.handler = async function(event, context) {
         const recordById = changedTable.createdRecordsById;
         console.log(Object.keys(recordById)[0])
     
-        updateMail(Object.keys(recordById)[0], imageUrl)
+        await updateMail(Object.keys(recordById)[0], imageUrl)
       }
     }
   }
