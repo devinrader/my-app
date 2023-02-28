@@ -11,7 +11,7 @@ exports.handler = async function(event, context) {
 
     let headers = { 
       headers: {
-        'Authorization': `Bearer patTp0Aw6boovC62m.26bf00c32a6f37dd59cc2bc17662a6140186a73f4efe3ecc14cd4262cde5aebd`, //${process.env.VITE_AIRTABLE_TOKEN}` ,
+        'Authorization': `Bearer ${process.env.VITE_AIRTABLE_TOKEN}` ,
         'Content-Type': 'application/json'
       }
     }
